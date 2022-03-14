@@ -31,6 +31,7 @@ import os
 # Parameters
 # ==============================================================================
 years = [2013, 2014, 2015, 2016, 2017]
+states = ["Idaho", "Oregon", "Washington"]
 
 
 # Setup 'output' directory for functions to place files into
@@ -41,53 +42,79 @@ if not isExist:
 os.chdir(output_loc)
 
 
-'''
---------------------------------------------------------------------------------
-Collect IPEDS Data: HD{}, Institutional Characteristics
---------------------------------------|-----------------------------------------
-Call the 'collect_hd()' function from 'functions.py' imported above.
---------------------------------------------------------------------------------
-'''
-if input("Collect IPEDS data for Institutional Characteristics? (y/n)") == "y":
+# Choose whether to run everything or be prompted for each module
+if input("Would you like to be prompted to run each module? (y/n)") != "y":
     f.collect_hd(years)
-else:
-    print("skipped collect_hd()")
-
-
-'''
---------------------------------------------------------------------------------
-Collect IPEDS Data: EFFY{}, 12-Month Enrollment
---------------------------------------|-----------------------------------------
-Call the 'collect_effy()' function from 'functions.py' imported above.
---------------------------------------------------------------------------------
-'''
-if input("Collect IPEDS data for 12-Month Enrollment? (y/n)") == "y":
     f.collect_effy(years)
-else:
-    print("skipped collect_effy()")
-
-
-'''
---------------------------------------------------------------------------------
-Merge IPEDS Survey Data
---------------------------------------|-----------------------------------------
-Call the 'merge()' function from 'functions.py' imported above.
---------------------------------------------------------------------------------
-'''
-if input("Merge datasets? (y/n)") == "y":
     f.merge()
-else:
-    print("skipped merge()")
-
-
-'''
---------------------------------------------------------------------------------
-Cleanup 'Output' Directory
---------------------------------------|-----------------------------------------
-Call the 'cleanup_dir()' function from 'functions.py' imported above.
---------------------------------------------------------------------------------
-'''
-if input("Cleanup output directory? (y/n)") == "y":
     f.cleanup_dir(wd)
+    f.cleaning_keep(states) # Select keep/drop
 else:
-    print("skipped cleanup_dir()")
+
+
+    '''
+    ----------------------------------------------------------------------------
+    Collect IPEDS Data: HD{}, Institutional Characteristics
+    --------------------------------------|-------------------------------------
+    Call the 'collect_hd()' function from 'functions.py' imported above.
+    ----------------------------------------------------------------------------
+    '''
+    if input("Collect IPEDS data for Institutional Characteristics? (y/n)") == "y":
+        f.collect_hd(years)
+    else:
+        print("skipped collect_hd()")
+
+
+    '''
+    ----------------------------------------------------------------------------
+    Collect IPEDS Data: EFFY{}, 12-Month Enrollment
+    --------------------------------------|-------------------------------------
+    Call the 'collect_effy()' function from 'functions.py' imported above.
+    ----------------------------------------------------------------------------
+    '''
+    if input("Collect IPEDS data for 12-Month Enrollment? (y/n)") == "y":
+        f.collect_effy(years)
+    else:
+        print("skipped collect_effy()")
+
+
+    '''
+    ----------------------------------------------------------------------------
+    Merge IPEDS Survey Data
+    --------------------------------------|-------------------------------------
+    Call the 'merge()' function from 'functions.py' imported above.
+    ----------------------------------------------------------------------------
+    '''
+    if input("Merge datasets? (y/n)") == "y":
+        f.merge()
+    else:
+        print("skipped merge()")
+
+
+    '''
+    ----------------------------------------------------------------------------
+    Cleanup 'Output' Directory
+    --------------------------------------|-------------------------------------
+    Call the 'cleanup_dir()' function from 'functions.py' imported above.
+    ----------------------------------------------------------------------------
+    '''
+    if input("Cleanup output directory? (y/n)") == "y":
+        f.cleanup_dir(wd)
+    else:
+        print("skipped cleanup_dir()")
+
+
+    '''
+    ----------------------------------------------------------------------------
+    Data Cleaning 'all_data.csv'
+    --------------------------------------|-------------------------------------
+    Call the 'cleanup_dir()' function from 'functions.py' imported above.
+    ----------------------------------------------------------------------------
+    '''
+    if input("Clean data in all_data.csv? (y/n)") == "y":
+        if input("Would you like to keep or drop provided states? (k/d)") == 'k':
+            f.cleaning_keep(states)
+        else:
+            f.cleaning_drop(states)
+    else:
+        print("skipped cleaning()")

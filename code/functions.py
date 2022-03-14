@@ -22,7 +22,7 @@ import shutil
 import sys
 import zipfile
 from numba import jit, cuda
-from timeit import default_timer
+from timeit import default_timer as timer
 
 
 ''' Add more surveys.
@@ -110,6 +110,7 @@ def collect_hd(years):
     print('DONE WITH HD{} SURVEY!', end='\n\n')
 
 
+# ==============================================================================
 # Define function to collect EFFY{}, 12-Month Enrollment
 def collect_effy(years):
     # I use the ipeds prefix because the data comes from the:
@@ -188,6 +189,7 @@ def collect_effy(years):
     print('DONE WITH EFFY{} SURVEY!', end='\n\n')
 
 
+# ==============================================================================
 def merge():
     ''' Merge.
 
@@ -224,15 +226,12 @@ def merge():
     # Optionally, print .head to verify correct merge behavior
     # print("\n MERGED Data \n", all_data.head(n=50))
 
-    # Keep only observations from states of interest
-    print('Dropping unnecessary states')
-    all_data[all_data["stabbr"].str.contains("Idaho|Oregon|Washington")==True]
-
     print('Writing all_data.csv as csv')
     all_data.to_csv('all_data.csv', index=False)
     print('DONE MERGING DATASETS!', end='\n\n')
 
 
+# ==============================================================================
 def cleanup_dir(wd):
     # Cleanup output directory by deleting redundant files
 
@@ -269,3 +268,26 @@ def cleanup_dir(wd):
             continue
 
     print("AFTER--", os.getcwd(), "contains: %s" %os.listdir(os.getcwd()))
+
+
+# ==============================================================================
+def cleaning_keep(states):
+    # Keep only observations from paramterized
+    all_data = pd.read_csv('all_data.csv', dtype=object)
+    print('Keeping listed states')
+    all_data[all_data["stabbr"].str.contains("|".join(states))==True]
+
+    print('Overwriting all_data.csv as csv')
+    all_data.to_csv('all_data.csv', index=False)
+    print('DONE CLEANING DATASET!', end='\n\n')
+
+
+# ==============================================================================
+def cleaning_drop(states):
+    # Drop observations from parameterized states
+    print('Dropping listed states')
+    all_data[all_data["stabbr"].str.contains("|".join(states))==False]
+
+    print('Overwriting all_data.csv as csv')
+    all_data.to_csv('all_data.csv', index=False)
+    print('DONE CLEANING DATASET!', end='\n\n')
