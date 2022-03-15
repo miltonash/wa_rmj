@@ -1,6 +1,6 @@
 # WA RMJ
 
-WA RMJ collects and analyzes data for research, "The Effect of College Students on Recreational Marijuana Sales in Washington State".
+WA RMJ collects data for the research project, "The Effect of College Students on Recreational Marijuana Sales in Washington State".
 
 ## Installation of Requirements
 
@@ -12,7 +12,9 @@ pip install -r requirements.txt
 
 ## Usage
 
-Some packages are included in the Python distribution by default. Those that aren't need to be installed (using requirements.txt) and imported. The following explains why each of these packages is being installed.
+The 'execute.py' script calls modules defined as functions from the 'functions.py' script. These modules reach out to IPEDS, collect data grouped into surveys based on parameterized years and states, extract and merge the datasets into one longitudinal data panel, update the included data dictionaries to include code labels instead of code values for better readability, and remove redundant datasets leaving behind only the merged dataset. The scripts 'NaNinOrgid_test.py' and 'NaNinOrgid_fix.py' identify data errors in dispensary-level sales data from WA state, then iterates through those files and corrects the issue.
+
+A handful of packages are used to accomplish the tasks defined in these scripts. Some packages are included in the Python distribution by default. Those that aren't need to be installed (using requirements.txt) and imported. The following explains why each of these packages is being installed.
 
 ```python
 import pandas
