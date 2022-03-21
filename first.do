@@ -9,6 +9,7 @@ Lorem ipsum.
 
 
 // Log and clear
+cd "~/Documents/Data/wa_rmj"
 capture log close
 log using first.log, replace
 clear all
@@ -35,7 +36,7 @@ foreach x of local files {
   di "`x'" // Display file name
   qui: import delimited "`x'", delimiter(",") case(preserve) clear // Import csv file
   qui: gen id = subinstr("`x'", ".dta.csv", "", .) // Generate id variable (same as file name but without .dta.csv)
-  append using `master'
+  append using `master', force
   save `master', replace
 }
 
@@ -45,13 +46,11 @@ sort id Segment
 outsheet using dispensing_combined.csv , comma replace
 
 
-
-
-
-
-
 /* =============================================================================
 SAVE CLEANED DATA
 ============================================================================= */
 * cd "~/Documents/GitHub/wa_rmj/output"
 * outsheet using all_data_clean.csv , comma replace
+
+
+log close
