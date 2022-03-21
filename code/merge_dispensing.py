@@ -11,7 +11,8 @@ data panel (longitudinal data) using using two surveys from IPEDS: (1) HD{}: Ins
 '''
 # ==============================================================================
 # !!! SET WORKING DIRECTORY !!!
-wd = "/Volumes/My Passport/"
+# wd = "/Volumes/My Passport"
+wd = "/Users/Milton/Documents/Data/wa_rmj"
 # ==============================================================================
 
 # Import packages, listed alphabetically
@@ -32,12 +33,16 @@ def merge_dispensing():
     '''
 
     # setting the path for joining multiple files
-    files = os.path.join(wd, "dispensing*.csv")
+    files = os.path.join(wd, "dispensing*.dta.csv")
     # list of merged files returned
     files = glob.glob(files)
+    print(files, end='\n\n')
     print("Merging...")
     start = timer()
     # joining files with concat and read_csv
     # df = pd.concat(map(pd.read_csv, files), ignore_index=True)
-    print("MERGE COMPLETE! It took: ", timer()-start , " seconds.")
+    print("MERGE COMPLETE! It took:", timer()-start , "seconds.")
     sms.send_sms()
+
+
+merge_dispensing()

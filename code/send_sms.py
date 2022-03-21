@@ -9,13 +9,18 @@
 This script defines a function called 'message()'. message() can be imported into scripts. When a script has finished running in the terminal, sms() will text my phone with a message to tell me that it is done.
 '''
 # ==============================================================================
+# !!! SET WORKING DIRECTORY !!!
+wd = "/Users/Milton/Documents/GitHub/wa_rmj/code"
+# ==============================================================================
+
+# Import packages, listed alphabetically
+import os
+from twilio.rest import Client
 
 
 def send_sms():
-    # we import the Twilio client from the dependency we just installed
-    from twilio.rest import Client
-
-    # the following line needs your Twilio Account SID and Auth Token
+    os.chdir(wd)
+    # the following lines need your Twilio Account SID and Auth Token
     sid = open('Account_SID.txt', 'r')
     Account_SID = sid.read()
     token = open('Auth_Token.txt', 'r')
