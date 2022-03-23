@@ -1,14 +1,14 @@
 # ==============================================================================
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-# File Name: merge_dispensing.py
+# File Name: dispensing_data_cleaning.py
 # Author: Milton Straw
 
 ''' Description.
 
-This script defines the necessary functions used to put append all of the
-weekly 'dispensary{}_w{}.dta.csv' datasets into one all-inclusive baseline
-dataset. This large dataset will be cleaned later.
+This script defines the necessary functions used to clean the dataset
+'dispensing_combined.csv'. It is paramterized for easy changes and
+repeatability.
 '''
 # ==============================================================================
 # !!! SET DIRECTORIES !!!
