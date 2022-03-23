@@ -12,9 +12,8 @@ repeatability.
 '''
 # ==============================================================================
 # !!! SET DIRECTORIES !!!
-# files_loc = "/Volumes/My Passport"
 wd = "/Users/Milton/Documents/GitHub/wa_rmj"
-files_loc = "/Users/Milton/Documents/Data/wa_rmj"
+files_loc = "/Users/Milton/Documents/Data/wa_rmj/input"
 # ==============================================================================
 
 # Import packages, listed alphabetically
@@ -26,33 +25,30 @@ import pandas as pd
 import sys
 sys.path.append("code")
 import send_sms as sms # local
+from datetime import timedelta
 from numba import jit
 from timeit import default_timer as timer
 
 
 # @cuda.jit(nopython=True)
 @jit
-def merge_dispensing():
-    ''' Merge.
+def dispensing_data_cleaning():
 
-    Merge WA-state dispensary weekly datasets into one all-inclusive
-    data panel.
-    '''
-
-    # setting the path for joining multiple files
-    files = os.path.join(files_loc, "dispensing*.dta.csv")
-    # list of merged files returned
-    files = glob.glob(files)
-    print(files, end='\n\n')
-    print("Merging...")
     start = timer()
-    # joining files with concat and read_csv
-    df = pd.concat(map(pd.read_csv, files), ignore_index=True)
+    # read in the raw data
+    df = pd.read_csv(os.path.join(files_loc, 'dispensing_combined.csv'),
+                     dtype=object)
+
+
+
     df.sort_values(by=['year', 'quarter', 'month', 'week', 'day', 'orgid'])
+    print('Overwriting dispensing_cleaned.csv as csv')
     os.chdir(files_loc)
-    df.to_csv('dispensing_combined.csv', index=False)
-    print("MERGE COMPLETE! It took:", timer()-start , "seconds.")
+    df.to_csv('dispensing_cleaned.csv', index=False)
+    elapsed = timer()-start
+    print("CLEANING COMPLETE! Time elasped:", str(timedelta(seconds=elapsed)),
+           end='\n\n')
     sms.send_sms()
 
 
-merge_dispensing()
+dispensing_data_cleaning()
